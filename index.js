@@ -29,6 +29,14 @@ client.connect(err => {
     .then( result => {
         res.send( result.insertedCount > 0 );
     })
+   })
+   app.post('/appointmentsByDate',(req,res) => {
+    const date = req.body
+    console.log(date.date);
+    appointmentsCollection.find({date: date.date})
+    .toArray((err, documents) => {
+      res.send(documents);
+    })
   })
   console.log('Database Connected Successfully');
   
