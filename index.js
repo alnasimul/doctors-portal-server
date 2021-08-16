@@ -40,7 +40,7 @@ client.connect(err => {
   app.post('/appointmentsByDate', (req, res) => {
     const date = req.body
     const email = req.body.email;
-    console.log(date.date);
+    //console.log(date.date);
     doctorsCollection.find({ email: email })
       .toArray((err, doctors) => {
         const filter = { date: date.date }
@@ -53,6 +53,15 @@ client.connect(err => {
           })
       })
   })
+
+  app.get('/appointments', (req, res) => {
+    appointmentsCollection.find({})
+      .toArray((err, documents) => {
+        res.send(documents);
+      })
+  })
+
+
   app.post('/addADoctor', (req, res) => {
     const file = req.files.file;
     const name = req.body.name;
@@ -97,8 +106,18 @@ client.connect(err => {
         res.send(documents);
       })
   })
+  app.get('/isDoctor/:email', (req, res) => {
+    const email = req.params.email;
+    console.log(email)
+    doctorsCollection.find({ email: email })
+      .toArray((err, doctors) => {
+        res.send(doctors.length > 0);
+      })
+  })
   console.log('Database Connected Successfully');
 
 });
+
+
 
 app.listen(process.env.PORT || port)
